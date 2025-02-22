@@ -7,7 +7,7 @@ can be checked in the "About & Help" menu of the core.
 
 ## Version 1
 
-| Name         | Date     | Commit  | Comment
-|--------------|----------|---------|--------------------------------------
-| WIP-V1-A1    | 03/20/24 | 337b500 | First version that is able to load and run PRG files
+| Name         | Date       | Commit  | Comment
+|--------------|------------|---------|--------------------------------------
+| V1.0A1       | 2025-02-22 | 1b58328 | First version that is able to load and run PRG files
 
