@@ -251,20 +251,22 @@ architecture synthesis of mega65_core is
    constant C_MENU_FLIP_JOYS     : natural := 22;
    constant C_MENU_IMPROVE_AUDIO : natural := 23;
    constant C_MENU_IEC           : natural := 24;
-   constant C_MENU_HDMI_16_9_50  : natural := 31;
-   constant C_MENU_HDMI_16_9_60  : natural := 32;
-   constant C_MENU_HDMI_4_3_50   : natural := 33;
-   constant C_MENU_HDMI_5_4_50   : natural := 34;
-   constant C_MENU_HDMI_640_60   : natural := 35;
-   constant C_MENU_HDMI_720_5994 : natural := 36;
-   constant C_MENU_HDMI_800_60   : natural := 37;
-   constant C_MENU_HDMI_FF       : natural := 39;
-   constant C_MENU_HDMI_DVI      : natural := 40;
-   constant C_MENU_CRT_EMULATION : natural := 43;
-   constant C_MENU_HDMI_ZOOM     : natural := 44;
-   constant C_MENU_VGA_STD       : natural := 48;
-   constant C_MENU_VGA_15KHZHSVS : natural := 52;
-   constant C_MENU_VGA_15KHZCS   : natural := 53;
+   constant C_MENU_CENTER_HORZ   : natural := 25;
+   constant C_MENU_CENTER_VERT   : natural := 26;
+   constant C_MENU_HDMI_16_9_50  : natural := 33;
+   constant C_MENU_HDMI_16_9_60  : natural := 34;
+   constant C_MENU_HDMI_4_3_50   : natural := 35;
+   constant C_MENU_HDMI_5_4_50   : natural := 36;
+   constant C_MENU_HDMI_640_60   : natural := 37;
+   constant C_MENU_HDMI_720_5994 : natural := 38;
+   constant C_MENU_HDMI_800_60   : natural := 39;
+   constant C_MENU_HDMI_FF       : natural := 41;
+   constant C_MENU_HDMI_DVI      : natural := 42;
+   constant C_MENU_CRT_EMULATION : natural := 45;
+   constant C_MENU_HDMI_ZOOM     : natural := 46;
+   constant C_MENU_VGA_STD       : natural := 50;
+   constant C_MENU_VGA_15KHZHSVS : natural := 54;
+   constant C_MENU_VGA_15KHZCS   : natural := 55;
    subtype  c_menu_osm_scaling is natural range 67 downto 59;
 
    signal   qnice_conf_wr : std_logic;
@@ -390,6 +392,9 @@ begin
                                    main_osm_control_i(C_MENU_RAM_4000) &
                                    main_osm_control_i(C_MENU_RAM_2000) &
                                    main_osm_control_i(C_MENU_RAM_0400),
+
+         center_i               => main_osm_control_i(C_MENU_CENTER_VERT) &
+                                   main_osm_control_i(C_MENU_CENTER_HORZ),
 
          clk_main_speed_i       => CORE_CLK_SPEED,
          video_retro15khz_i     => main_osm_control_i(C_MENU_VGA_15KHZHSVS) or main_osm_control_i(C_MENU_VGA_15KHZCS),

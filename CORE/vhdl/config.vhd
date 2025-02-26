@@ -77,7 +77,7 @@ type WHS_RECORD_ARRAY_TYPE is array (0 to WHS_RECORDS - 1) of WHS_RECORD_TYPE;
 
 constant SCR_WELCOME : string :=
 
-   "\n VIC20 for MEGA65 Version 1.0A2\n\n" &
+   "\n VIC20 for MEGA65 Version 1.0A3\n\n" &
 
    " MiSTer port 2024 by MJoergen\n" &
    " Powered by MiSTer2MEGA65\n\n\n" &
@@ -97,7 +97,7 @@ constant SCR_WELCOME : string :=
 
 constant HELP_1 : string :=
 
-   "\n VIC20 for MEGA65 Version 1.0A2\n" &
+   "\n VIC20 for MEGA65 Version 1.0A3\n" &
 
    " MiSTer port 2024 by MJoergen\n" &
    " Powered by MiSTer2MEGA65\n\n" &
@@ -128,7 +128,7 @@ constant HELP_1 : string :=
 
 constant HELP_2 : string :=
 
-   "\n VIC20 for MEGA65 Version 1.0A2\n\n" &
+   "\n VIC20 for MEGA65 Version 1.0A3\n\n" &
 
    " When browsing the menu:\n\n" &
 
@@ -159,7 +159,7 @@ constant HELP_2 : string :=
 
 constant HELP_3 : string :=
 
-   "\n VIC20 for MEGA65 Version 1.0A2\n\n" &
+   "\n VIC20 for MEGA65 Version 1.0A3\n\n" &
 
    " IEC:\n\n" &
 
@@ -291,7 +291,7 @@ constant SEL_CORENAME      : std_logic_vector(15 downto 0) := x"0200";
 
 -- Currently this is only used in the debug console. Use the welcome screen and the
 -- help system to display the name and version of your core to the end user
-constant CORENAME          : string := "VIC20 for MEGA65 Version 1.0A2";
+constant CORENAME          : string := "VIC20 for MEGA65 Version 1.0A3";
 
 --------------------------------------------------------------------------------------------------------------------
 -- "Help" menu / Options menu  (Selectors 0x0300 .. 0x0312): DO NOT TOUCH
@@ -352,7 +352,7 @@ constant OPTM_S_SAVING     : string := "<Saving>";          -- the internal writ
 --             Do use a lower case \n. If you forget one of them or if you use upper case, you will run into undefined behavior.
 --          2. Start each line that contains an actual menu item (multi- or single-select) with a Space character,
 --             otherwise you will experience visual glitches.
-constant OPTM_SIZE         : natural := 74;  -- amount of items including empty lines:
+constant OPTM_SIZE         : natural := 76;  -- amount of items including empty lines:
                                              -- needs to be equal to the number of lines in OPTM_ITEMS and amount of items in OPTM_GROUPS
                                              -- IMPORTANT: If SAVE_SETTINGS is true and OPTM_SIZE changes: Make sure to re-generate and
                                              -- and re-distribute the config file. You can make a new one using M2M/tools/make_config.sh
@@ -360,7 +360,7 @@ constant OPTM_SIZE         : natural := 74;  -- amount of items including empty 
 -- Net size of the Options menu on the screen in characters (excluding the frame, which is hardcoded to two characters)
 -- Without submenus: Use OPTM_SIZE as height, otherwise count how large the actually visible main menu is.
 constant OPTM_DX           : natural := 24;
-constant OPTM_DY           : natural := 28;
+constant OPTM_DY           : natural := 30;
 
 constant OPTM_ITEMS        : string :=
 
@@ -392,6 +392,8 @@ constant OPTM_ITEMS        : string :=
    " Flip joystick ports\n"    &
    " Audio improvements\n"     &
    " IEC: Use hardware port\n" &
+   " Horizontal center\n"      &
+   " Vertical center\n"        &
 
    "\n"                        &
    " Display Settings\n"       &
@@ -463,6 +465,8 @@ constant OPTM_G_HDMI_ZOOM     : integer := 17;
 constant OPTM_G_VGA_MODES     : integer := 18;
 constant OPTM_G_OSM_MODE      : integer := 19;
 constant OPTM_G_ABOUT_HELP    : integer := 20;
+constant OPTM_G_CENTER_HORZ   : integer := 21;
+constant OPTM_G_CENTER_VERT   : integer := 22;
 
 -- !!! DO NOT TOUCH !!!
 type OPTM_GTYPE is array (0 to OPTM_SIZE - 1) of integer range 0 to 2**OPTM_GTC- 1;
@@ -496,6 +500,8 @@ constant OPTM_GROUPS : OPTM_GTYPE := (
    OPTM_G_FLIP_JOYS     + OPTM_G_SINGLESEL,                 -- Flip joystick ports
    OPTM_G_IMPROVE_AUDIO + OPTM_G_SINGLESEL + OPTM_G_STDSEL, -- Audio improvements
    OPTM_G_IEC           + OPTM_G_SINGLESEL,                 -- IEC: Use hardware port
+   OPTM_G_CENTER_HORZ   + OPTM_G_SINGLESEL + OPTM_G_STDSEL, -- Horizontal centering
+   OPTM_G_CENTER_VERT   + OPTM_G_SINGLESEL + OPTM_G_STDSEL, -- Vertical centering
 
    OPTM_G_LINE,                                             --
    OPTM_G_HEADLINE,                                         -- Display settings

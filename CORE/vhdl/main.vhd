@@ -39,6 +39,7 @@ entity main is
       -- Select VIC20's ROM: 0=Custom, 1=Standard
       vic20_rom_i            : in    std_logic;
       ram_ext_i              : in    std_logic_vector(4 downto 0);
+      center_i               : in    std_logic_vector(1 downto 0);
 
       -- MiSTer core main clock speed:
       -- Make sure you pass very exact numbers here, because they are used for avoiding clock drift at derived clocks
@@ -307,7 +308,11 @@ begin
          o_video_b     => vga_blue,
          o_hblank      => video_hblank_o,
          o_vblank      => video_vblank_o,
-         i_center      => "11",
+         -- 00 = None
+         -- 01 = Horz
+         -- 10 = Vert
+         -- 11 = Both
+         i_center      => center_i,
          i_pal         => '1',
          i_wide        => '0',
 
