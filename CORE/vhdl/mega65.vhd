@@ -1,11 +1,11 @@
 ----------------------------------------------------------------------------------
--- VIC 20 for MEGA65
+-- C16 / Plus4 for MEGA65
 --
 -- MEGA65 main file that contains the whole machine
 --
--- based on VIC20_MiSTer by the MiSTer development team
+-- based on C16_MiSTer by the MiSTer development team
 -- powered by MiSTer2MEGA65 done by sy2002 and MJoergen in 2023
--- port done by MJoergen in 2024 and licensed under GPL v3
+-- port done by piso in 2026 and licensed under GPL v3
 ----------------------------------------------------------------------------------
 
 library ieee;
