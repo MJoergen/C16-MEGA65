@@ -31,9 +31,9 @@ entity clk is
    port (
       sys_clk_i       : in  std_logic;   -- expects 100 MHz
 
-      main_clk_o      : out std_logic;   -- main's 35.468944 MHz main clock
+      main_clk_o      : out std_logic;   -- main's 28.38010 Mhz MHz main clock
       main_rst_o      : out std_logic;   -- main's reset, synchronized
-      video_clk_o     : out std_logic;   -- video's 70.937888 MHz main clock
+      video_clk_o     : out std_logic;   -- video's 56.76020 MHz main clock
       video_rst_o     : out std_logic    -- video's reset, synchronized
    );
 end entity clk;
@@ -69,11 +69,11 @@ begin
          CLKFBOUT_MULT_F      => 55.625,     -- 794.642 MHz
          CLKFBOUT_PHASE       => 0.000,
          CLKFBOUT_USE_FINE_PS => FALSE,
-         CLKOUT0_DIVIDE_F     => 28.000,     -- 28.38010 MHz
+         CLKOUT0_DIVIDE_F     => 14.000,     -- 56.76020 Mhz
          CLKOUT0_PHASE        => 0.000,
          CLKOUT0_DUTY_CYCLE   => 0.500,
          CLKOUT0_USE_FINE_PS  => FALSE,
-         CLKOUT1_DIVIDE       => 14,         -- 56.76020 MHz
+         CLKOUT1_DIVIDE       => 28,         -- 28.38010 Mhz
          CLKOUT1_PHASE        => 0.000,
          CLKOUT1_DUTY_CYCLE   => 0.500,
          CLKOUT1_USE_FINE_PS  => FALSE
