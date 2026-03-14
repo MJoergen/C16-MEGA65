@@ -512,13 +512,12 @@ begin
    video_green_o   <= vga_green & "0000";
    video_blue_o    <= vga_blue & "0000";
    video_ce_o      <= video_ce and not video_ce_d;
-   video_ce_ovl_o  <= -- '1' when video_retro15khz_i = '0' else
+   video_ce_ovl_o  <= '1' when video_retro15khz_i = '0' else
                       not div_ovl(0);
 
    video_hs_o      <= not vga_hs;
    video_vs_o      <= not vga_vs;
 
-   -- Clock divider: The core's pixel clock is 1/2 of the main clock
    video_ce_proc : process (clk_video_i)
    begin
       if rising_edge(clk_video_i) then
