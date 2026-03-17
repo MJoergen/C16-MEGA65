@@ -5,7 +5,7 @@
 --
 -- based on VIC20MEGA65 by MJoergen and sy2002 in 2023
 -- based on C16_MiSTer by the MiSTer development team
--- port done by piso in 2026 and licensed under GPL v3
+-- port done by Paolo Pisati (piso) in 2026 and licensed under GPL v3
 ----------------------------------------------------------------------------------
 
 library ieee;
@@ -43,7 +43,7 @@ entity main is
       video_retro15khz_i     : in    std_logic;
 
       ---------------------------
-      -- VIC 20 I/O ports
+      -- C16 I/O ports
       ---------------------------
 
       -- M2M Keyboard interface
@@ -91,7 +91,7 @@ entity main is
       audio_left_o           : out   signed(15 downto 0);
       audio_right_o          : out   signed(15 downto 0);
 
-      -- VIC20 drive led (color is RGB)
+      -- C16 drive led (color is RGB)
       drive_led_o            : out   std_logic;
       drive_led_col_o        : out   std_logic_vector(23 downto 0);
 
@@ -127,17 +127,17 @@ end entity main;
 
 architecture synthesis of main is
 
-   -- Generic MiSTer VIC20 signals
+   -- Generic MiSTer C16 signals
    signal   drive_led : std_logic;
 
    signal   o_audio : std_logic_vector(15 downto 0);
 
-   -- VIC20's IEC signals
-   signal   vic20_iec_clk_out  : std_logic;
-   signal   vic20_iec_clk_in   : std_logic;
-   signal   vic20_iec_atn_out  : std_logic;
-   signal   vic20_iec_data_out : std_logic;
-   signal   vic20_iec_data_in  : std_logic;
+   -- C16's IEC signals
+   signal   c16_iec_clk_out  : std_logic;
+   signal   c16_iec_clk_in   : std_logic;
+   signal   c16_iec_atn_out  : std_logic;
+   signal   c16_iec_data_out : std_logic;
+   signal   c16_iec_data_in  : std_logic;
 
    -- Hardware IEC port
    signal   hw_iec_clk_n_in  : std_logic;
@@ -171,7 +171,7 @@ architecture synthesis of main is
    signal   iec_par_data_in     : std_logic_vector(7 downto 0);
    signal   iec_par_data_out    : std_logic_vector(7 downto 0);
 
-   -- unprocessed video output of the VIC20 core
+   -- unprocessed video output of the C16 core
    signal   vga_hs    : std_logic;
    signal   vga_vs    : std_logic;
    signal   vga_red   : std_logic_vector(3 downto 0);
@@ -180,7 +180,7 @@ architecture synthesis of main is
    signal   div       : unsigned(1 downto 0);
    signal   div_ovl   : unsigned(0 downto 0);
 
-   -- clock enable to derive the VIC20's pixel clock from the core's main clock
+   -- clock enable to derive the C16's pixel clock from the core's main clock
    signal   video_ce   : std_logic;
    signal   video_ce_d : std_logic;
 
@@ -457,7 +457,7 @@ begin
          -- tape
          cass_mtr               => open,
          cass_in                => '0',
-         cass_aud               => '0,
+         cass_aud               => '0',
          cass_out               => open,
 
          -- joystick
@@ -470,11 +470,11 @@ begin
          key_play               => open,
 
          -- IEC
---         iec_dataout            => vic20_iec_data_out,
---         iec_datain             => vic20_iec_data_in and hw_iec_data_n_in,
---         iec_clkout             => vic20_iec_clk_out,
---         iec_clkin              => vic20_iec_clk_in and hw_iec_clk_n_in,
---         iec_atnout             => vic20_iec_atn_out,
+--         iec_dataout            => c16_iec_data_out,
+--         iec_datain             => c16_iec_data_in and hw_iec_data_n_in,
+--         iec_clkout             => c16_iec_clk_out,
+--         iec_clkin              => c16_iec_clk_in and hw_iec_clk_n_in,
+--         iec_atnout             => c16_iec_atn_out,
 --         iec_reset              => open,
            iec_dataout            => open,
            iec_datain             => '0',
@@ -535,15 +535,15 @@ begin
 
       -- Since IEC is a bus, we need to connect the input lines coming from the hardware port
       -- to all participants of the bus. At this time these are:
-      --    VIC20: vic20_inst using the iec_ signals
+      --    C16: c16_inst using the iec_ signals
       --    Simulated disk drives: iec_drive_inst using the iec_ signals
       -- All signals are LOW active, so we need to AND them.
-      -- As soon as we have more participants than just vic20_inst and iec_drive_inst we will
+      -- As soon as we have more participants than just c16_inst and iec_drive_inst we will
       -- need to have some more signals for the bus instead of directly connecting them as we do today.
       hw_iec_clk_n_in  <= '1';
       hw_iec_data_n_in <= '1';
 
-      -- According to https://www.c64-wiki.com/wiki/Serial_Port, the VIC20 does not use the SRQ line and therefore
+      -- According to https://www.c64-wiki.com/wiki/Serial_Port, the C16 does not use the SRQ line and therefore
       -- we are at this time also not using it. The wiki article states, hat even though it is not used, it is
       -- still connected with the read line of the cassette port (although this can only detect signal edges,
       -- but not signal levels).
@@ -561,19 +561,19 @@ begin
          iec_clk_n_o      <= '0';
          iec_data_n_o     <= '0';
 
-         -- These lines are not connected to a NC7SZ126P5X since the VIC20 is supposed to be the only
+         -- These lines are not connected to a NC7SZ126P5X since the C16 is supposed to be the only
          -- party in the bus who is allowed to pull this line to zero
          iec_reset_n_o    <= reset_core_n;
-         iec_atn_n_o      <= vic20_iec_atn_out;
+         iec_atn_n_o      <= c16_iec_atn_out;
 
          -- Read from the hardware IEC port (see comment above: We need to connect this to i_fpga64_sid_iec and i_iec_drive)
          hw_iec_clk_n_in  <= iec_clk_n_i;
          hw_iec_data_n_in <= iec_data_n_i;
 
          -- Write to the IEC port by pulling the signals low and otherwise let them float (using the NC7SZ126P5X chip)
-         -- We need to invert the logic, because if the VIC20 wants to pull something to LOW we need to ENABLE the NC7SZ126P5X's OE
-         iec_clk_en_o     <= not vic20_iec_clk_out;
-         iec_data_en_o    <= not vic20_iec_data_out;
+         -- We need to invert the logic, because if the C16 wants to pull something to LOW we need to ENABLE the NC7SZ126P5X's OE
+         iec_clk_en_o     <= not c16_iec_clk_out;
+         iec_data_en_o    <= not c16_iec_data_out;
       end if;
    end process handle_hardware_iec_port_proc;
 
@@ -607,12 +607,12 @@ begin
 --         reset        => iec_drives_reset,
 --         pause        => '0',
 
---         -- interface to the VIC20 core
---         iec_clk_i    => vic20_iec_clk_out and hw_iec_clk_n_in,
---         iec_clk_o    => vic20_iec_clk_in,
---         iec_atn_i    => vic20_iec_atn_out,
---         iec_data_i   => vic20_iec_data_out and hw_iec_data_n_in,
---         iec_data_o   => vic20_iec_data_in,
+--         -- interface to the C16 core
+--         iec_clk_i    => c16_iec_clk_out and hw_iec_clk_n_in,
+--         iec_clk_o    => c16_iec_clk_in,
+--         iec_atn_i    => c16_iec_atn_out,
+--         iec_data_i   => c16_iec_data_out and hw_iec_data_n_in,
+--         iec_data_o   => c16_iec_data_in,
 
 --         -- disk image status
 --         img_mounted  => iec_img_mounted,
