@@ -470,18 +470,12 @@ begin
          key_play               => open,
 
          -- IEC
---         iec_dataout            => c16_iec_data_out,
---         iec_datain             => c16_iec_data_in and hw_iec_data_n_in,
---         iec_clkout             => c16_iec_clk_out,
---         iec_clkin              => c16_iec_clk_in and hw_iec_clk_n_in,
---         iec_atnout             => c16_iec_atn_out,
---         iec_reset              => open,
-           iec_dataout            => open,
-           iec_datain             => '0',
-           iec_clkout             => open,
-           iec_clkin              => '0',
-           iec_atnout             => open,
-           iec_reset              => open,
+         iec_dataout            => c16_iec_data_out,
+         iec_datain             => c16_iec_data_in and hw_iec_data_n_in,
+         iec_clkout             => c16_iec_clk_out,
+         iec_clkin              => c16_iec_clk_in and hw_iec_clk_n_in,
+         iec_atnout             => c16_iec_atn_out,
+         iec_reset              => open,
 
          -- TED audio and SID selector
          sound                  => o_audio,
@@ -595,59 +589,59 @@ begin
       iec_drives_reset(i) <= (not reset_core_n) or (not vdrives_mounted(i));
    end generate iec_drv_reset_gen;
 
---   c1541_multi_inst : entity work.c1541_multi
---      generic map (
---         PARPORT => 0, -- Parallel C1541 port for faster (~20x) loading time using DolphinDOS
---         DUALROM => 1, -- Two switchable ROMs: Standard DOS and JiffyDOS
---         DRIVES  => G_VDNUM
---      )
---      port map (
---         clk          => clk_main_i,
---         ce           => iec_drive_ce,
---         reset        => iec_drives_reset,
---         pause        => '0',
+  c1541_multi_inst : entity work.c1541_multi
+     generic map (
+        PARPORT => 0, -- Parallel C1541 port for faster (~20x) loading time using DolphinDOS
+        DUALROM => 1, -- Two switchable ROMs: Standard DOS and JiffyDOS
+        DRIVES  => G_VDNUM
+     )
+     port map (
+        clk          => clk_main_i,
+        ce           => iec_drive_ce,
+        reset        => iec_drives_reset,
+        pause        => '0',
 
---         -- interface to the C16 core
---         iec_clk_i    => c16_iec_clk_out and hw_iec_clk_n_in,
---         iec_clk_o    => c16_iec_clk_in,
---         iec_atn_i    => c16_iec_atn_out,
---         iec_data_i   => c16_iec_data_out and hw_iec_data_n_in,
---         iec_data_o   => c16_iec_data_in,
+        -- interface to the C16 core
+        iec_clk_i    => c16_iec_clk_out and hw_iec_clk_n_in,
+        iec_clk_o    => c16_iec_clk_in,
+        iec_atn_i    => c16_iec_atn_out,
+        iec_data_i   => c16_iec_data_out and hw_iec_data_n_in,
+        iec_data_o   => c16_iec_data_in,
 
---         -- disk image status
---         img_mounted  => iec_img_mounted,
---         img_readonly => iec_img_readonly,
---         img_size     => iec_img_size,
---         gcr_mode     => "00",                -- D64
+        -- disk image status
+        img_mounted  => iec_img_mounted,
+        img_readonly => iec_img_readonly,
+        img_size     => iec_img_size,
+        gcr_mode     => "00",                -- D64
 
---         -- QNICE SD-Card/FAT32 interface
---         clk_sys      => iec_clk_sd_i,
+        -- QNICE SD-Card/FAT32 interface
+        clk_sys      => iec_clk_sd_i,
 
---         sd_lba       => iec_sd_lba,
---         sd_blk_cnt   => iec_sd_blk_cnt,
---         sd_rd        => iec_sd_rd,
---         sd_wr        => iec_sd_wr,
---         sd_ack       => iec_sd_ack,
---         sd_buff_addr => iec_sd_buf_addr,
---         sd_buff_dout => iec_sd_buf_data_in,  -- data from SD card to the buffer RAM within the drive ("dout" is a strange name)
---         sd_buff_din  => iec_sd_buf_data_out, -- read the buffer RAM within the drive
---         sd_buff_wr   => iec_sd_buf_wr,
+        sd_lba       => iec_sd_lba,
+        sd_blk_cnt   => iec_sd_blk_cnt,
+        sd_rd        => iec_sd_rd,
+        sd_wr        => iec_sd_wr,
+        sd_ack       => iec_sd_ack,
+        sd_buff_addr => iec_sd_buf_addr,
+        sd_buff_dout => iec_sd_buf_data_in,  -- data from SD card to the buffer RAM within the drive ("dout" is a strange name)
+        sd_buff_din  => iec_sd_buf_data_out, -- read the buffer RAM within the drive
+        sd_buff_wr   => iec_sd_buf_wr,
 
---         -- drive led
---         led          => drive_led,
+        -- drive led
+        led          => drive_led,
 
---         -- Parallel C1541 port
---         par_stb_i    => iec_par_stb_in,
---         par_stb_o    => iec_par_stb_out,
---         par_data_i   => iec_par_data_in,
---         par_data_o   => iec_par_data_out,
+        -- Parallel C1541 port
+        par_stb_i    => iec_par_stb_in,
+        par_stb_o    => iec_par_stb_out,
+        par_data_i   => iec_par_data_in,
+        par_data_o   => iec_par_data_out,
 
---         rom_std_i    => '1',                 -- 1=use the factory default ROM
---         rom_addr_i   => (others => '0'),
---         rom_data_i   => (others => '0'),
---         rom_data_o   => open,
---         rom_wr_i     => '1'
---      ); -- c1541_multi_inst
+        rom_std_i    => '1',                 -- 1=use the factory default ROM
+        rom_addr_i   => (others => '0'),
+        rom_data_i   => (others => '0'),
+        rom_data_o   => open,
+        rom_wr_i     => '1'
+     ); -- c1541_multi_inst
 
    -- 16 MHz chip enable for the IEC drives, so that ph2_r and ph2_f can be 1 MHz (C1541's CPU runs with 1 MHz)
    -- Uses a counter to compensate for clock drift, because the input clock is not exactly at 32 MHz
