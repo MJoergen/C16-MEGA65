@@ -218,6 +218,8 @@ architecture synthesis of main is
 
    signal kern : std_logic;
 
+   signal joy0, joy1 : std_logic_vector(4 downto 0);
+
 begin
 
    -- prevent data corruption by not allowing a soft reset to happen while the cache is still dirty
@@ -425,6 +427,9 @@ begin
        end if;
    end process;
 
+   joy0 <= not(joy_1_fire_n_i & joy_1_up_n_i & joy_1_down_n_i & joy_1_left_n_i & joy_1_right_n_i);
+   joy1 <= not(joy_2_fire_n_i & joy_2_up_n_i & joy_2_down_n_i & joy_2_left_n_i & joy_2_right_n_i);
+
    c16_inst : entity work.c16
       port map (
          clk28                  => clk_main_i,
@@ -460,8 +465,8 @@ begin
          cass_out               => open,
 
          -- joystick
-         joy0                   => (others => '0'),
-         joy1                   => (others => '0'),
+         joy0                   => joy0,
+         joy1                   => joy1,
 
          -- keyboard
          kb_key_num_i           => kb_key_num_i,
