@@ -377,8 +377,8 @@ constant OPTM_ITEMS        : string :=
    " SID card\n"               &
    "\n"                        &
    " None\n"                   &
-   " SID 6581\n"               &
-   " SID 8580\n"               &
+   " 6581\n"                   &
+   " 8580\n"                   &
    "\n"                        &
    " Back to main menu\n"      &
 
